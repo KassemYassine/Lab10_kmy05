@@ -38,6 +38,7 @@ pipeline {
         stage('Security Scan') {
             steps {
                 script {
+                    // Specifying to scan only Python files and using quiet mode to reduce log verbosity
                     bat "call ${env.WORKSPACE}\\${VIRTUAL_ENV}\\Scripts\\activate && bandit -r . --quiet --include '\\.py$'"
                 }
             }
