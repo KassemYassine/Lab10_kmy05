@@ -1,1 +1,4 @@
+#flake8 (only in part 3 required )
 flake8
+coverage
+bandit
