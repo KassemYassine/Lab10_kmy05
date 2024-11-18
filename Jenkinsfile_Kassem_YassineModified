@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         VIRTUAL_ENV = 'venv'
-        PYTHONIOENCODING = 'utf-8'  // Set the encoding to UTF-8
+        PYTHONIOENCODING = 'utf-8'  // Ensuring UTF-8 encoding
     }
     stages {
         stage('Setup') {
@@ -39,14 +39,14 @@ pipeline {
         stage('Security Scan') {
             steps {
                 script {
-                    bat "call ${env.WORKSPACE}\\${env.VIRTUAL_ENV}\\Scripts\\activate && bandit -r . --quiet"
+                    // Exclude the virtual environment directory in the Bandit scan
+                    bat "call ${env.WORKSPACE}\\${env.VIRTUAL_ENV}\\Scripts\\activate && bandit -r . --quiet --exclude ./venv"
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
-                    // This is just an example deployment command
                     bat "echo Deploying application..."
                 }
             }
@@ -54,7 +54,6 @@ pipeline {
     }
     post {
         always {
-            // Clean the workspace after the build process is finished
             cleanWs()
         }
     }
