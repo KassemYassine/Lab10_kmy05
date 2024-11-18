@@ -3,6 +3,7 @@ pipeline {
     environment {
         VIRTUAL_ENV = 'venv'
         PYTHONIOENCODING = 'utf-8'  // Ensuring UTF-8 encoding
+        DEPLOY_DIR = 'C:\\deploy\\myapplication'  // Set your deployment directory path here
     }
     stages {
         stage('Setup') {
@@ -39,7 +40,6 @@ pipeline {
         stage('Security Scan') {
             steps {
                 script {
-                    // Exclude the virtual environment directory in the Bandit scan
                     bat "call ${env.WORKSPACE}\\${env.VIRTUAL_ENV}\\Scripts\\activate && bandit -r . --quiet --exclude ./venv"
                 }
             }
@@ -47,7 +47,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    bat "echo Deploying application..."
+                    // Simulate deployment by copying files to a specific directory
+                    bat "if not exist ${env.DEPLOY_DIR} mkdir ${env.DEPLOY_DIR}"
+                    bat "xcopy /S /Y ${env.WORKSPACE}\\* ${env.DEPLOY_DIR}\\"
+                    bat "echo Deployed application to ${env.DEPLOY_DIR}"
                 }
             }
         }
