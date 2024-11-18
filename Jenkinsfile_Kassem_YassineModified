@@ -38,13 +38,14 @@ pipeline {
         stage('Security Scan') {
             steps {
                 script {
-                    bat "call ${env.WORKSPACE}\\${env.VIRTUAL_ENV}\\Scripts\\activate && bandit -r . --quiet --include \\\\.py$"
+                    bat "call ${env.WORKSPACE}\\${env.VIRTUAL_ENV}\\Scripts\\activate && bandit -r . --quiet --include \\.py$"
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
+                    // Update this with your specific deployment logic
                     bat "echo Deploying application..."
                 }
             }
