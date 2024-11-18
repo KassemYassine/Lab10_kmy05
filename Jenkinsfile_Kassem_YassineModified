@@ -7,45 +7,44 @@ pipeline {
         stage('Setup') {
             steps {
                 script {
-                    if (!fileExists("${env.WORKSPACE}\\${VIRTUAL_ENV}")) {
-                        bat "python -m venv ${env.WORKSPACE}\\${VIRTUAL_ENV}"
+                    if (!fileExists("${env.WORKSPACE}\\${env.VIRTUAL_ENV}")) {
+                        bat "python -m venv ${env.WORKSPACE}\\${env.VIRTUAL_ENV}"
                     }
-                    bat "call ${env.WORKSPACE}\\${VIRTUAL_ENV}\\Scripts\\activate && pip install -r requirements.txt"
+                    bat "call ${env.WORKSPACE}\\${env.VIRTUAL_ENV}\\Scripts\\activate && pip install -r requirements.txt"
                 }
             }
         }
         stage('Lint') {
             steps {
                 script {
-                    bat "call ${env.WORKSPACE}\\${VIRTUAL_ENV}\\Scripts\\activate && flake8 app.py"
+                    bat "call ${env.WORKSPACE}\\${env.VIRTUAL_ENV}\\Scripts\\activate && flake8 app.py"
                 }
             }
         }
         stage('Test') {
             steps {
                 script {
-                    bat "call ${env.WORKSPACE}\\${VIRTUAL_ENV}\\Scripts\\activate && pytest"
+                    bat "call ${env.WORKSPACE}\\${env.VIRTUAL_ENV}\\Scripts\\activate && pytest"
                 }
             }
         }
         stage('Coverage') {
             steps {
                 script {
-                    bat "call ${env.WORKSPACE}\\${VIRTUAL_ENV}\\Scripts\\activate && coverage run -m pytest && coverage report"
+                    bat "call ${env.WORKSPACE}\\${env.VIRTUAL_ENV}\\Scripts\\activate && coverage run -m pytest && coverage report"
                 }
             }
         }
         stage('Security Scan') {
             steps {
                 script {
-                    bat "call ${env.WORKSPACE}\\${VIRTUAL_ENV}\\Scripts\\activate && bandit -r . --quiet"
+                    bat "call ${env.WORKSPACE}\\${env.VIRTUAL_ENV}\\Scripts\\activate && bandit -r . --quiet --include \\\\.py$"
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
-                    // Update this with your specific deployment logic
                     bat "echo Deploying application..."
                 }
             }
