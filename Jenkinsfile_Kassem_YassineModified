@@ -38,7 +38,7 @@ pipeline {
         stage('Security Scan') {
             steps {
                 script {
-                    bat "call ${env.WORKSPACE}\\${VIRTUAL_ENV}\\Scripts\\activate && bandit -r . --quiet"
+                    bat "call ${env.WORKSPACE}\\${VIRTUAL_ENV}\\Scripts\\activate && bandit -r . --quiet --include '\\.py$'"
                 }
             }
         }
